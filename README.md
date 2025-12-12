@@ -1,0 +1,1 @@
+# AdventOfSQL2025
