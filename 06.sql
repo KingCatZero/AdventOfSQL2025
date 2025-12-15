@@ -1,9 +1,9 @@
 WITH
   all_records AS (
     SELECT
-      ('2025-12-14'::date + (interval '1' day * s))::date AS dt
+      ('2025-12-15'::date + (interval '1' day * s))::date AS dt
       ,f.*
-    FROM GENERATE_SERIES(0, 11) AS s
+    FROM GENERATE_SERIES(0, 10) AS s
       CROSS JOIN families AS f
   )
 SELECT
