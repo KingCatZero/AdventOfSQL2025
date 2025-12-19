@@ -1,17 +1,16 @@
-CREATE TEMP TABLE to_move AS
+WITH
+  to_move AS (
+    DELETE
+    FROM deliveries
+    WHERE
+      delivery_location IN ('Volcano Rim', 'Drifting Igloo', 'Abandoned Lighthouse', 'The Vibes')
+    RETURNING
+      id, child_name, delivery_location, gift_name, scheduled_at
+  )
+INSERT INTO misdelivered_presents (
+  id, child_name, delivery_location, gift_name, scheduled_at, flagged_at, reason
+)
 SELECT
-  *
-  ,NOW() AS flagged_at
-  ,'Invalid delivery location' AS reason
-FROM deliveries
-WHERE
-  delivery_location IN ('Volcano Rim', 'Drifting Igloo', 'Abandoned Lighthouse', 'The Vibes')
-
-DELETE
-FROM deliveries
-WHERE
-  delivery_location IN ('Volcano Rim', 'Drifting Igloo', 'Abandoned Lighthouse', 'The Vibes')
-
-SELECT
-  *
+  id, child_name, delivery_location, gift_name, scheduled_at, NOW(), 'Invalid delivery location'
 FROM to_move
+RETURNING *
