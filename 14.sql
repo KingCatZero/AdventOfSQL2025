@@ -1,7 +1,7 @@
 WITH
 	RECURSIVE graph AS (
     	SELECT
-      		'Jake''s Lift' AS from_node
+      		'Jake''s Lift' AS current_node
       		,'Jake''s Lift' AS pth
       		,1 AS pth_size
       
@@ -13,10 +13,13 @@ WITH
       		,g.pth_size + 1
       	FROM graph AS g
       		INNER JOIN mountain_network AS mn ON
-      			mn.from_node = g.from_node
+      			mn.from_node = g.current_node
+		WHERE
+			g.pth NOT LIKE '%' || mn.to_node || '%'
+			AND g.pth_size <= 12
     )
 SELECT
 	*
 FROM graph
 WHERE
-	from_node = 'Maverick'
+	current_node = 'Maverick'
